@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#101044">
+  <title>Para Alicia | Felices 4 meses 🌻</title>
+
+  <style>
+    /* ==========================================================
+       1. VARIABLES Y BASE
+       ========================================================== */
+    :root {
+      --gold: #ffdf45;
+      --gold-soft: #ffe66d;
+      --cream: #fff2b2;
+      --pink: #f5b8df;
+      --night-1: #05051c;
+      --night-2: #101044;
+      --night-3: #24134b;
+      --paper: #fff8dc;
+      --ink: #5c3150;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      min-height: 100vh;
+      overflow-x: hidden;
+      color: #fff;
+      text-align: center;
+      font-family: Georgia, serif;
+      background: linear-gradient(to bottom, var(--night-1) 0%, var(--night-2) 48%, var(--night-3) 100%);
+    }
+
+    button { font: inherit; cursor: pointer; }
+
+    /* ==========================================================
+       2. FONDO: ESTRELLAS
+       ========================================================== */
+    .estrellas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .estrella {
+      position: absolute;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 0 7px #fff;
+      animation: brillar 2.4s infinite alternate ease-in-out;
+    }
+
+    /* ==========================================================
+       3. PANTALLA DE INTRODUCCIÓN
+       ========================================================== */
+    .intro {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 22px;
+      background: radial-gradient(ellipse at center, var(--night-3) 0%, var(--night-2) 48%, var(--night-1) 100%);
+      transition: opacity 1s ease, visibility 1s ease;
+    }
+
+    .intro.saliendo {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .intro__contenido {
+      width: min(100%, 430px);
+      animation: entrada 1.5s ease both;
+    }
+
+    .intro__flor {
+      font-size: 5rem;
+      filter: drop-shadow(0 0 15px var(--gold));
+      animation: latido 2s infinite;
+    }
+
+    .intro__titulo {
+      margin: 18px 0;
+      color: var(--gold-soft);
+      font-size: clamp(2rem, 6vw, 3rem);
+      text-shadow: 0 0 15px #ffcf33, 0 0 32px #ffcf33;
+    }
+
+    .intro__texto {
+      color: var(--cream);
+      font-size: 1.15rem;
+      line-height: 1.8;
+    }
+
+    .intro__texto--chico {
+      margin-top: 12px;
+      font-size: 1rem;
+    }
+
+    .intro__boton {
+      margin-top: 28px;
+      padding: 15px 28px;
+      border: 0;
+      border-radius: 30px;
+      background: var(--gold);
+      color: #392500;
+      font-size: 1rem;
+      font-weight: bold;
+      box-shadow: 0 0 20px var(--gold);
+      animation: latido 2s infinite;
+    }
+
+    /* ==========================================================
+       4. CONTENIDO PRINCIPAL
+       ========================================================== */
+    .contenido {
+      position: relative;
+      z-index: 2;
+      width: min(100%, 850px);
+      margin: 0 auto;
+      padding: 28px 16px 300px;
+    }
+
+    .titulo {
+      margin: 20px 0 14px;
+      color: var(--gold-soft);
+      font-size: clamp(2rem, 6vw, 3rem);
+      text-shadow: 0 0 15px #ffcf33, 0 0 32px #ffcf33;
+    }
+
+    .meses {
+      display: inline-block;
+      margin: 10px 0 18px;
+      padding: 12px 22px;
+      border: 1px solid var(--gold);
+      border-radius: 30px;
+      color: var(--gold-soft);
+      box-shadow: 0 0 18px var(--gold);
+      animation: latido 2s infinite;
+    }
+
+    .subtitulo {
+      margin: 18px auto;
+      color: var(--cream);
+      font-size: clamp(1rem, 3vw, 1.2rem);
+      line-height: 1.8;
+    }
+
+    .subtitulo p + p { margin-top: 1rem; }
+
+    .boton {
+      position: relative;
+      z-index: 5;
+      display: inline-block;
+      margin: 10px 5px;
+      padding: 14px 24px;
+      border: 0;
+      border-radius: 30px;
+      background: var(--gold);
+      color: #392500;
+      font-weight: bold;
+      box-shadow: 0 0 15px var(--gold);
+      transition: transform .25s, box-shadow .25s;
+    }
+
+    .boton:hover {
+      transform: scale(1.06);
+      box-shadow: 0 0 25px #fff06a;
+    }
+
+    .boton--musica {
+      background: var(--pink);
+      box-shadow: 0 0 15px #e98acb;
+    }
+
+    .estado-musica {
+      min-height: 1.3em;
+      margin: 2px auto 10px;
+      color: #f8dff0;
+      font: .9rem Arial, sans-serif;
+    }
+
+    /* ==========================================================
+       5. CARTA
+       ========================================================== */
+    .carta {
+      display: none;
+      position: relative;
+      z-index: 10;
+      width: min(92%, 470px);
+      margin: 28px auto;
+      padding: 28px 25px;
+      border-radius: 20px;
+      background: var(--paper);
+      color: var(--ink);
+      line-height: 1.85;
+      box-shadow: 0 0 30px #ffdb70;
+      animation: cartaAbrir .9s ease both;
+    }
+
+    .carta.visible { display: block; }
+
+    .carta__titulo {
+      margin-bottom: 15px;
+      color: #d17b00;
+    }
+
+    .carta p + p { margin-top: 1rem; }
+
+    .carta__firma {
+      color: #bd5890;
+      font-weight: bold;
+    }
+
+    /* ==========================================================
+       6. SORPRESA FINAL
+       ========================================================== */
+    .sorpresa {
+      display: none;
+      position: relative;
+      z-index: 10;
+      margin: 25px auto;
+      color: var(--gold-soft);
+      line-height: 1.7;
+      text-shadow: 0 0 15px #ffcf33;
+      animation: aparecer 1.5s ease both;
+    }
+
+    .sorpresa.visible { display: block; }
+
+    .sorpresa__titulo {
+      font-size: clamp(1.3rem, 4vw, 1.7rem);
+    }
+
+    .foto {
+      width: min(90%, 350px);
+      margin: 24px auto;
+      padding: 9px;
+      border: 3px solid #ffdf70;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #fff0a6, #d99b35, #fff0a6);
+      box-shadow: 0 0 15px var(--gold), 0 0 35px rgba(255, 223, 69, .5);
+      animation: fotoAparece 1.8s ease both;
+    }
+
+    .foto img {
+      display: block;
+      width: 100%;
+      max-height: 440px;
+      object-fit: contain;
+      border-radius: 10px;
+      background: #17102a;
+    }
+
+    .sorpresa__frase {
+      margin: 18px auto;
+      font-size: 1.12rem;
+    }
+
+    .sorpresa__despedida {
+      margin-top: 20px;
+      font-size: clamp(1.1rem, 4vw, 1.4rem);
+    }
+
+    .sorpresa__infinito {
+      display: block;
+      margin: 8px 0;
+      font-size: 2.5rem;
+    }
+
+    .sorpresa__nota { font-size: 1rem; }
+
+    .pie {
+      margin-top: 25px;
+      color: #d8c9e9;
+      font: .85rem Arial, sans-serif;
+    }
+
+    /* ==========================================================
+       7. JARDÍN DE FLORES AMARILLAS
+       ========================================================== */
+    .jardin {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      z-index: 1;
+      width: 100%;
+      height: 285px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: clamp(2px, 4vw, 35px);
+      pointer-events: none;
+    }
+
+    .flor {
+      position: relative;
+      flex: 0 1 100px;
+      width: 100px;
+      height: 220px;
+      transform-origin: bottom center;
+      clip-path: inset(100% 0 0 0);
+      transition: clip-path 2.2s cubic-bezier(.2, .7, .2, 1);
+    }
+
+    .flor:nth-child(2) { height: 190px; }
+    .flor:nth-child(3) { height: 245px; }
+    .flor:nth-child(4) { height: 200px; }
+    .flor:nth-child(5) { height: 225px; }
+
+    body.iniciado .flor {
+      clip-path: inset(0 0 0 0);
+      animation: balanceo 3.4s ease-in-out infinite;
+    }
+
+    .flor__tallo {
+      position: absolute;
+      bottom: 0;
+      left: 48px;
+      width: 5px;
+      height: 150px;
+      border-radius: 10px;
+      background: linear-gradient(#48b65d, #176c36);
+    }
+
+    .flor__hoja {
+      position: absolute;
+      bottom: 60px;
+      left: 50px;
+      width: 45px;
+      height: 20px;
+      border-radius: 100% 0;
+      background: #35b45b;
+      transform: rotate(-8deg);
+    }
+
+    .flor__petalo {
+      position: absolute;
+      top: 0;
+      left: 32px;
+      width: 35px;
+      height: 55px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #fff16a, #ffca18);
+      box-shadow: 0 0 12px #ffdb38;
+      transform-origin: 50% 50px;
+    }
+
+    .flor__centro {
+      position: absolute;
+      top: 35px;
+      left: 37px;
+      z-index: 2;
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, #c98219, #713400);
+      box-shadow: 0 0 10px #ffba35;
+    }
+
+    /* ==========================================================
+       8. EFECTOS: CORAZONES Y PARTÍCULAS
+       ========================================================== */
+    .corazon {
+      position: fixed;
+      bottom: -35px;
+      z-index: 4;
+      pointer-events: none;
+      animation: subir linear forwards;
+    }
+
+    .particula {
+      position: fixed;
+      z-index: 20;
+      pointer-events: none;
+      animation: explotar 1.6s ease-out forwards;
+    }
+
+    /* ==========================================================
+       9. ANIMACIONES
+       ========================================================== */
+    @keyframes brillar {
+      from { opacity: .2; transform: scale(.7); }
+      to { opacity: 1; transform: scale(1.5); }
+    }
+
+    @keyframes aparecer {
+      from { opacity: 0; transform: translateY(22px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes entrada {
+      from { opacity: 0; transform: translateY(35px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes latido {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.045); }
+    }
+
+    @keyframes balanceo {
+      0%, 100% { transform: rotate(-4deg); }
+      50% { transform: rotate(4deg); }
+    }
+
+    @keyframes cartaAbrir {
+      from { opacity: 0; transform: scale(.75) translateY(25px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    @keyframes fotoAparece {
+      from { opacity: 0; transform: scale(.65) rotate(-5deg); }
+      to { opacity: 1; transform: scale(1) rotate(0); }
+    }
+
+    @keyframes subir {
+      to { transform: translateY(-115vh) rotate(360deg); opacity: 0; }
+    }
+
+    @keyframes explotar {
+      to { transform: translate(var(--x), var(--y)) scale(0); opacity: 0; }
+    }
+
+    /* ==========================================================
+       10. RESPONSIVE Y ACCESIBILIDAD
+       ========================================================== */
+    @media (max-width: 520px) {
+      .contenido { padding-bottom: 260px; }
+      .jardin { height: 235px; gap: 0; }
+      .flor { transform: scale(.82); margin: 0 -7px; }
+      .carta { padding: 23px 19px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Fondo de estrellas -->
+  <div class="estrellas" id="estrellas" aria-hidden="true"></div>
+
+  <!-- Pantalla inicial -->
+  <div class="intro" id="intro">
+    <div class="intro__contenido">
+      <div class="intro__flor">🌻</div>
+      <h1 class="intro__titulo">Hola, Alicia ❤️</h1>
+      <p class="intro__texto">Tengo algo muy especial preparado para ti...</p>
+      <p class="intro__texto intro__texto--chico">Una pequeña sorpresa por nuestros 4 meses juntos. 💗</p>
+      <button class="intro__boton" id="botonAbrir" type="button">Abrir mi sorpresa 💌</button>
+    </div>
+  </div>
+
+  <!-- Contenido principal -->
+  <main class="contenido">
+    <h1 class="titulo">🌻 Felices 4 meses, mi Alicia 🌻</h1>
+    <div class="meses">❤️ 4 meses de nosotros ❤️</div>
+
+    <div class="subtitulo">
+      <p>Alicia, entre tantas personas en este mundo, qué bonito que la vida me haya permitido coincidir contigo. 💗</p>
+      <p>Eres mi casualidad favorita.</p>
+    </div>
+
+    <button class="boton boton--musica" id="botonMusica" type="button">🎵 Reproducir M.A.I</button>
+    <p class="estado-musica" id="estadoMusica" aria-live="polite">Pulsa para escuchar nuestra canción. 🎶</p>
+
+    <button class="boton" id="botonCarta" type="button">💌 Abrir mi cartita</button>
+
+    <!-- Carta -->
+    <section class="carta" id="carta">
+      <h2 class="carta__titulo">Para mi Alicia ❤️</h2>
+      <p>Mi niña hermosa:</p>
+      <p>Hoy cumplimos 4 meses juntos y quiero que sepas lo feliz que me hace tenerte en mi vida.</p>
+      <p>Quizás no soy perfecto y quizás no siempre encuentre las palabras correctas para demostrarte todo lo que siento, pero quiero que nunca dudes de lo especial que eres para mí.</p>
+      <p>Me encanta saber que tengo a alguien como tú con quien compartir mis días. Quiero seguir creando recuerdos, compartiendo risas, abrazos y momentos que algún día podamos recordar con una sonrisa.</p>
+      <p>Si pudiera volver al día en que nuestras historias se cruzaron, volvería a elegirte sin pensarlo dos veces.</p>
+      <p>Gracias por estos cuatro meses, por tu cariño y por formar parte de mi vida.</p>
+      <p>Esto es solamente el comienzo de muchos momentos bonitos que todavía nos esperan.</p>
+      <p class="carta__firma">Te quiero muchísimo, Alicia. Felices 4 meses, mi amor. ❤️</p>
+      <button class="boton" id="botonSorpresa" type="button">💖 Una última sorpresa</button>
+    </section>
+
+    <!-- Sorpresa final -->
+    <section class="sorpresa" id="sorpresa">
+      <h2 class="sorpresa__titulo">🌻 Alicia, eres mi persona favorita 🌻</h2>
+
+      <figure class="foto">
+        <!-- Coloca tu foto en la misma carpeta con el nombre foto.png -->
+<img src="imagen.png.jpeg" alt="Un recuerdo especial de Alicia y yo">      </figure>
+
+      <p class="sorpresa__frase">«Mi lugar favorito siempre será a tu lado, Alicia». ❤️</p>
+
+      <p>Gracias por estos 4 meses. Quiero que sean muchísimos más.</p>
+
+      <p class="sorpresa__despedida">TE QUIERO, MI NIÑA ❤️</p>
+      <span class="sorpresa__infinito" aria-hidden="true">∞</span>
+      <p class="sorpresa__nota">4 meses de nosotros, y una historia que quiero seguir escribiendo contigo.</p>
+    </section>
+
+    <p class="pie">Hecho con mucho cariño para Alicia. 🌻</p>
+  </main>
+
+  <!-- Jardín de flores -->
+  <div class="jardin" id="jardin" aria-hidden="true"></div>
+
+  <!-- Música -->
+<audio id="musica" src="musica.mp3.mp3" preload="none" loop></audio>
+
+  <script>
+    /* ==========================================================
+       REFERENCIAS
+       ========================================================== */
+    const $ = (id) => document.getElementById(id);
+
+    const elEstrellas = $('estrellas');
+    const elJardin = $('jardin');
+    const elIntro = $('intro');
+    const elCarta = $('carta');
+    const elSorpresa = $('sorpresa');
+    const musica = $('musica');
+    const botonMusica = $('botonMusica');
+    const estadoMusica = $('estadoMusica');
+
+    const EMOJIS_CORAZON = ['❤️', '💕', '💗', '💖', '💛'];
+    const EMOJIS_PARTICULA = ['💛', '✨', '❤️', '🌟', '🌻'];
+
+    const aleatorio = (lista) =>
+      lista[Math.floor(Math.random() * lista.length)];
+
+    /* ==========================================================
+       ESTRELLAS
+       ========================================================== */
+    function crearEstrellas(cantidad = 100) {
+      for (let i = 0; i < cantidad; i++) {
+        const estrella = document.createElement('span');
+        const tamano = Math.random() * 3 + 1;
+
+        estrella.className = 'estrella';
+
+        estrella.style.cssText =
+          `width:${tamano}px;height:${tamano}px;` +
+          `left:${Math.random() * 100}%;top:${Math.random() * 100}%;` +
+          `animation-delay:${Math.random() * 3}s;`;
+
+        elEstrellas.appendChild(estrella);
+      }
+    }
+
+    /* ==========================================================
+       JARDÍN DE FLORES
+       ========================================================== */
+    function crearJardin(cantidad = 5) {
+      const petalos = Array.from({ length: 8 }, (_, i) =>
+        `<div class="flor__petalo" style="transform:rotate(${i * 45}deg)"></div>`
+      ).join('');
+
+      for (let i = 0; i < cantidad; i++) {
+        const flor = document.createElement('div');
+
+        flor.className = 'flor';
+        flor.style.transitionDelay = `${i * 180}ms`;
+        flor.style.animationDelay = `${i * 0.3}s`;
+
+        flor.innerHTML =
+          '<div class="flor__tallo"></div>' +
+          '<div class="flor__hoja"></div>' +
+          '<div class="flor__centro"></div>' +
+          petalos;
+
+        elJardin.appendChild(flor);
+      }
+    }
+
+    /* ==========================================================
+       MÚSICA
+       ========================================================== */
+    function actualizarBotonMusica() {
+      botonMusica.textContent = musica.paused
+        ? '🎵 Reproducir M.A.I'
+        : '⏸️ Pausar M.A.I';
+    }
+
+    async function reproducirMusica() {
+      try {
+        await musica.play();
+        estadoMusica.textContent = 'Sonando para ti, Alicia. ❤️';
+      } catch {
+        estadoMusica.textContent = 'Pulsa el botón para escuchar la canción. 🎶';
+      }
+
+      actualizarBotonMusica();
+    }
+
+    function alternarMusica() {
+      if (musica.paused) {
+        reproducirMusica();
+      } else {
+        musica.pause();
+        estadoMusica.textContent = 'Música en pausa.';
+        actualizarBotonMusica();
+      }
+    }
+
+    musica.addEventListener('ended', actualizarBotonMusica);
+
+    musica.addEventListener('error', () => {
+      estadoMusica.textContent =
+        'No se encontró mai.mp3. Colócalo junto a este archivo.';
+    });
+
+    /* ==========================================================
+       EFECTOS: CORAZONES Y PARTÍCULAS
+       ========================================================== */
+    let intervaloCorazones = null;
+
+    function crearCorazon() {
+      const corazon = document.createElement('div');
+
+      corazon.className = 'corazon';
+      corazon.textContent = aleatorio(EMOJIS_CORAZON);
+      corazon.style.left = `${Math.random() * 100}vw`;
+      corazon.style.fontSize = `${15 + Math.random() * 20}px`;
+      corazon.style.animationDuration = `${5 + Math.random() * 5}s`;
+
+      document.body.appendChild(corazon);
+
+      setTimeout(() => corazon.remove(), 10500);
+    }
+
+    function lluviaDeAmor(cantidad = 45) {
+      for (let i = 0; i < cantidad; i++) {
+        const particula = document.createElement('div');
+
+        particula.className = 'particula';
+        particula.textContent = aleatorio(EMOJIS_PARTICULA);
+
+        particula.style.left = `${Math.random() * 100}vw`;
+        particula.style.top = `${Math.random() * 100}vh`;
+
+        particula.style.setProperty(
+          '--x',
+          `${(Math.random() - 0.5) * 300}px`
+        );
+
+        particula.style.setProperty(
+          '--y',
+          `${(Math.random() - 0.5) * 300}px`
+        );
+
+        document.body.appendChild(particula);
+
+        setTimeout(() => particula.remove(), 1700);
+      }
+    }
+
+    /* ==========================================================
+       ACCIONES DE LA PÁGINA
+       ========================================================== */
+    function comenzarSorpresa() {
+      elIntro.classList.add('saliendo');
+      document.body.classList.add('iniciado');
+
+      reproducirMusica();
+      lluviaDeAmor();
+
+      if (!intervaloCorazones) {
+        intervaloCorazones = setInterval(crearCorazon, 750);
+      }
+
+      setTimeout(() => {
+        elIntro.style.display = 'none';
+      }, 1100);
+    }
+
+    function mostrarSeccion(seccion) {
+      seccion.classList.add('visible');
+
+      seccion.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center'
+      });
+
+      lluviaDeAmor();
+    }
+
+    /* ==========================================================
+       INICIO
+       ========================================================== */
+    crearEstrellas();
+    crearJardin();
+
+    $('botonAbrir').addEventListener('click', comenzarSorpresa);
+
+    botonMusica.addEventListener('click', alternarMusica);
+
+    $('botonCarta').addEventListener('click', () =>
+      mostrarSeccion(elCarta)
+    );
+
+    $('botonSorpresa').addEventListener('click', () =>
+      mostrarSeccion(elSorpresa)
+    );
+  </script>
+
+</body>
+</html>
